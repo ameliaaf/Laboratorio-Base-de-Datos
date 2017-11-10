@@ -1,0 +1,90 @@
+# Laboratorio-Base-de-Datos
+use Farmacia
+
+
+create procedure Sp1
+(@valor money)
+as
+begin
+select * from dbo.Detalle_Producto
+where PTotal < @valor
+end
+exec Sp1 50
+
+
+create procedure Sp2
+(@valor int)
+as
+begin
+select * from dbo.Inventario_Producto
+where cantidad = @valor 
+end
+exec Sp2 300
+
+
+create procedure Sp3
+(@valor varchar(20))
+as
+begin
+select * from dbo.Producto_Detalle_Orden
+where Producto = @valor 
+end
+exec Sp3 'Tabcin'
+
+
+create procedure Sp4
+(@valor varchar(20))
+as
+begin
+update dbo.Proveedor_Sucursal
+set NombreSucursal = @valor
+where  NombreSucursal = 'Sucursal San Nicolás' 
+end
+exec Sp4 'Sucursal Monterrey'
+
+create procedure Sp5
+(@valor money)
+as
+begin
+update dbo.Producto_Detalle_Orden
+set precio = @valor
+where precio = 25.00 
+end
+exec Sp5 30.00
+
+
+
+
+create function funcion1(@valor1 int, @valor2 int)
+returns int
+as 
+begin
+return @valor1 + @valor2
+end
+select dbo.funcion1(50, 40)
+
+
+create trigger trig
+on producto
+after update  
+as begin
+select *
+from INSERTED
+select *
+from DELETED
+end 
+
+select * from producto
+update producto
+set precio = 100.00
+where precio = 70.00
+
+create trigger trig
+on producto
+instead  of update  
+as 
+begin
+update producto
+set precio = 55.00
+where precio= 50.00
+end 
